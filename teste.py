@@ -8,10 +8,10 @@ BASE = declarative_base()
 def connect_db():
   DIALECT = 'oracle'
   SQL_DRIVER = 'cx_oracle'
-  USERNAME = 'admin' #enter your username
-  PASSWORD = '123456789' #enter your password
-  HOST = 'oracle-74473-0.cloudclusters.net' #enter the oracle db host url
-  PORT = 12272 # enter the oracle port number
+  USERNAME = 'locadora' #enter your username
+  PASSWORD = 'Oracle18' #enter your password
+  HOST = 'oracle-74472-0.cloudclusters.net' #enter the oracle db host url
+  PORT = 12498 # enter the oracle port number
   SERVICE = 'XE' # enter the oracle db service name
   ENGINE_PATH_WIN_AUTH = DIALECT + '+' + SQL_DRIVER + '://' + USERNAME + ':' + PASSWORD +'@' + HOST + ':' + str(PORT) + '/?service_name=' + SERVICE
 
@@ -45,7 +45,7 @@ dw_engine = connect_db_dimensional()
 
 #SELECT
 metadata = MetaData(bind=None)
-artistas = Table('artistas', metadata, autoload=True, autoload_with= engine)
+artistas = Table('DM_ARTISTA', metadata, autoload=True, autoload_with= dw_engine)
 
 #printa coluna da tabela
 
@@ -54,11 +54,11 @@ artistas = Table('artistas', metadata, autoload=True, autoload_with= engine)
 #   print(columns.name)
 
 
-# #select simples 
-# print("\n -- select simples --") 
-# stmt = select([artistas])
-# print(stmt)
-# print(engine.execute(stmt).fetchall())
+#select simples 
+print("\n -- select simples --") 
+stmt = select([artistas])
+print(stmt)
+print(engine.execute(stmt).fetchall())
 
 # #percorrer os resultados
 # results = engine.execute(stmt).fetchall()

@@ -22,3 +22,5 @@ def Exclude():
     dw_engine.execute(dm_tempo.delete()) 
     dw_engine.execute(dm_titulo.delete()) 
  
+
+Exclude()
