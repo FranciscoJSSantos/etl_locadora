@@ -492,14 +492,6 @@ def IdGrav(id):
             
             return id
 
-# def ValAr(locacao):
-#     vl = 0
-#     locs = ExtrairLocacoes()
-#     for i in locs:
-#         vl += i.val_loc
-        
-#     return vl
-
 def CalcularMul(locacao):
     multa = 0
     tempoAtraso = date.today()-locacao.dat_venc.strftime("%Y","%m","%d")
@@ -608,13 +600,15 @@ def CarregarFTlocacoes():
 def ETL():
     print("Iniciando rotina ETL")
     start = timeit.default_timer()
+    
     CarregarDmArtistas()
-    # CarregarDmGravadora()
-    # CarregarDmSocio()
-    # CarregarDmTempo()
-    # CarregarDmTitulo()
-    #CarregarFTlocacoes()
+    CarregarDmGravadora()
+    CarregarDmSocio()
+    CarregarDmTempo()
+    CarregarDmTitulo()
+    CarregarFTlocacoes()
+    
     end = timeit.default_timer()
     r = (end - start)
     print("Finalizado a rotina ETL. "
-          f"- Tempo de transformação: {r} segundos")
+          f"- Tempo total: {r} segundos")
