@@ -472,7 +472,7 @@ def TransformarFMLocacoes():
     return locFT
 
 def CalDt(locacao):
-    tempoAtraso = date.today()-locacao.dat_vencstrftime("%Y", "%m", "%d")
+    tempoAtraso = date.today()-locacao.dat_venc.strftime("%Y", "%m", "%d")
     return tempoAtraso
     
 
@@ -502,7 +502,7 @@ def IdGrav(id):
 
 def CalcularMul(locacao):
     multa = 0
-    tempoAtraso = date.today()-locacao.dat_vencstrftime("%Y","%m","%d")
+    tempoAtraso = date.today()-locacao.dat_venc.strftime("%Y","%m","%d")
     if(tempoAtraso > 1):
         tempoAtraso -= 1
         multa += tempoAtraso * 0.4
