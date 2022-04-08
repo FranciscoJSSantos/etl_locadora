@@ -4,8 +4,6 @@ from exclude import Exclude
 print("================================")
 print("Conexões dos Bancos Realizadas")
 
-
-
 while(True):
     print("\n")
     print("================================")

@@ -16,42 +16,11 @@ import time
 from datetime import date, datetime, timedelta
 import timeit
 from Entities import artista,copias,tempo,dmArtistas,dmGravadora,dmSocio,dmTempo,dmTitulo,ftLocacoes,gravadoras,itensLocacao,locacoes,socios,tipoSocio,titulos
-
+from conexao import connect_db
 
 BASE = declarative_base()
-
-def connect_db():
-  DIALECT = 'oracle'
-  SQL_DRIVER = 'cx_oracle'
-  USERNAME = 'locadora' #enter your username
-  PASSWORD = 'Oracle18' #enter your password
-  HOST = 'oracle-74472-0.cloudclusters.net' #enter the oracle db host url
-  PORT = 12498 # enter the oracle port number
-  SERVICE = 'XE' # enter the oracle db service name
-  ENGINE_PATH_WIN_AUTH = DIALECT + '+' + SQL_DRIVER + '://' + USERNAME + ':' + PASSWORD +'@' + HOST + ':' + str(PORT) + '/?service_name=' + SERVICE
-
-  engine = sa.create_engine(ENGINE_PATH_WIN_AUTH)
-  print("Abrindo Conexao Relacional")
-  return engine
-  
+ 
 engine = connect_db()
-
-
-def connect_db_dimensional():
-  DIALECT = 'oracle'
-  SQL_DRIVER = 'cx_oracle'
-  USERNAME = 'dw_locadora' #enter your username
-  PASSWORD = 'Oracle18' #enter your password
-  HOST = 'oracle-74472-0.cloudclusters.net' #enter the oracle db host url
-  PORT = 12498 # enter the oracle port number
-  SERVICE = 'XE' # enter the oracle db service name
-  ENGINE_PATH_WIN_AUTH = DIALECT + '+' + SQL_DRIVER + '://' + USERNAME + ':' + PASSWORD +'@' + HOST + ':' + str(PORT) + '/?service_name=' + SERVICE
-
-  dw_engine = sa.create_engine(ENGINE_PATH_WIN_AUTH)
-  print("Abrindo Conexao Dimensional")
-  return dw_engine
-  
-dw_engine = connect_db_dimensional()
 metadata = sa.MetaData(bind=None)
 
 ##Tabelas relacionais
@@ -91,9 +60,6 @@ def ExtrairArtista():
         art1.append(artista.Artistas(row[0],row[1],row[2],row[3],row[4],row[5],row[6]))
         count += 1
     
-    # for i in art1:
-    #    print(i.cod_art)
-
     end = timeit.default_timer()
     r = (end - start)
     print("Fim da extrção dos Artistas")
@@ -114,10 +80,7 @@ def ExtrairCopias():
     for row in result:
         cop1.append(copias.Copias(row[0],row[1],row[2],row[3]))
         count += 1
-    
-    #for i in cop1:
-    #    print(i.cod_tit)
-
+        
     end = timeit.default_timer()
     r = (end - start)
     print("Fim da extracao das Copias")
@@ -140,9 +103,6 @@ def ExtrairGravadoras():
         grav1.append(gravadoras.Gravadoras(row[0],row[1],row[2],row[3]))
         count += 1
     
-    #for i in grav1:
-    #    print(i.nom_grav)
-
     end = timeit.default_timer()
     r = (end - start)
     print("Fim da extracao das Gravadoras")
@@ -164,9 +124,6 @@ def ExtrairItensLocacoes():
         il1.append(itensLocacao.ItensLocacoes(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
         count += 1
     
-    #for i in il1:
-    #    print(i.dat_dev)
-
     end = timeit.default_timer()
     r = (end - start)
     print("Fim da extracao dos Itens Locações")
@@ -188,9 +145,6 @@ def ExtrairLocacoes():
         l1.append(locacoes.Locacoes(row[0],row[1],row[2],row[3],row[4],row[5]))
         count += 1
     
-    #for i in l1:
-    #    print(i.dat_loc)
-
     end = timeit.default_timer()
     r = (end - start)
     print("Fim da extrção dos Locações")
@@ -212,9 +166,6 @@ def ExtrairSocios():
         s1.append(socios.Socios(row[0],row[1],row[2],row[3],row[4]))
         count += 1
     
-    #for i in s1:
-    #    print(i.nom_soc)
-
     end = timeit.default_timer()
     r = (end - start)
     print("Fim da extrção dos Socios")
@@ -236,9 +187,6 @@ def ExtrairTipoSocios():
         ts1.append(tipoSocio.TipoSocios(row[0],row[1],row[2],row[3]))
         count += 1
     
-    #for i in ts1:
-    #    print(i.dsc_tps)
-
     end = timeit.default_timer()
     r = (end - start)
     print("Fim da extrção dos Tipo de Socios")
@@ -260,9 +208,6 @@ def ExtrairTitulos():
         t1.append(titulos.Titulos(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
         count += 1
     
-    #for i in t1:
-    #    print(i.dsc_tit)
-
     end = timeit.default_timer()
     r = (end - start)
     print("Fim da extrção dos Títulos")
@@ -284,9 +229,6 @@ def ExtrairTempo():
         temp1.append(tempo.Tempo(row[1]))
         count += 1
     
-    #for i in temp1: - TESTES
-    #    print(i.tempoLoc)
-
     end = timeit.default_timer()
     r = (end - start)
     print("Fim da extrção dos Tipo de Socios")
@@ -304,10 +246,7 @@ def TransformarArtistas():
         
     for i in artista:
        artisdw.append(dmArtistas.DM_artistas(i.cod_art,i.nac_bras,i.nom_art,i.tpo_art))
-    
-    # for a in artisdw: 
-    #     print(a.nom_art)
-        
+      
     end = timeit.default_timer()
     r = (end - start)
     print("Finalizado processo de transformação dos artista. "
@@ -323,10 +262,7 @@ def TransformarGravadoras():
         
     for i in gravadora:
        gravdw.append(dmGravadora.DM_gravadora(i.cod_grav,i.uf_grav,i.nac_bras,i.nom_grav))
-    
-    #for a in gravdw: - TESTES
-    #  print(a.nom_grav)
-        
+       
     end = timeit.default_timer()
     r = (end - start)
     print("Finalizado processo de transformação dos artista. "
@@ -342,10 +278,7 @@ def TransformarSocio():
         
     for i in gravadora:
        socdw.append(dmSocio.DM_socio(i.cod_soc,i.nom_soc,i.cod_tps))
-    
-    #for a in socdw: - TESTES
-    #  print(a.nom_soc,a.tipo_socio)
-        
+     
     end = timeit.default_timer()
     r = (end - start)
     print("Finalizado processo de transformação dos Socios. "
@@ -364,12 +297,6 @@ def TransformarTempo():
        count+=1
        tempdw.append(dmTempo.DM_tempo(count,i.tempoLoc.strftime("%Y"),i.tempoLoc.strftime("%m"),i.tempoLoc.strftime("%Y")+i.tempoLoc.strftime("%m"),NomMes(i.tempoLoc.strftime("%m"))[0:3],NomMes(i.tempoLoc.strftime("%m"))[0:3]+"/"+i.tempoLoc.strftime("%Y"),NomMes(i.tempoLoc.strftime("%m")),i.tempoLoc.strftime("%d"),i.tempoLoc,i.tempoLoc.strftime("%H"),Turn(i.tempoLoc.strftime("%H"))))
 
-    #for a in tempdw:
-    #    print(a.turno)
-
-    #for a in tempdw: 
-    #  print(a.sg_mes)
-        
     end = timeit.default_timer()
     r = (end - start)
     print("Finalizado processo de transformação do tempo. "
@@ -425,12 +352,6 @@ def TransformarTitulo():
         
     for i in tit:
        titdw.append(dmTitulo.DM_titulo(i.cod_tit,i.tpo_tit,i.cla_tit,i.dsc_tit))
-
-    #for a in titdw: - TESTE
-    #    print(a.dsc_titulo)
-
-    #for a in titdw: 
-    #  print(a.sg_mes)
         
     end = timeit.default_timer()
     r = (end - start)
@@ -460,10 +381,7 @@ def TransformarFMLocacoes():
 
     for a in locFT: 
         print(a.id_art)
-
-    #for a in locFT: 
-    #  print(a.sg_mes)
-        
+ 
     end = timeit.default_timer()
     r = (end - start)
     print("Finalizado processo de transformação das Locações. "
