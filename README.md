@@ -39,5 +39,5 @@ def connect_db():
 ```
   
 - Depois disso pode entrar no arquivo 'geral.py' e executar
-- Nele contém 2 opções: a primeira é para limpar o modelo dimensional e a segunda é para realizar o processo etl
+- Nele contém 3 opções: a primeira é para limpar o modelo dimensional,segunda é para realizar o processo etl e terceira para sair
 - Pronto, pode olhar a seu banco no modelo dimensional e conferir
